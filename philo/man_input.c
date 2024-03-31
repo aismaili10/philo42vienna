@@ -14,24 +14,25 @@
 
 static int	assign_num(char *str, int i, t_input *input)
 {
-	int	overflow;
+	size_t	tmp;
+	int		overflow;
 
 	overflow = 0;
+	tmp = philo_ato_size_t(str, &overflow);
 	if (i == 1)
-		input->num_philo = philo_ato_size_t(str, &overflow);
+		input->num_philo = tmp;
 	else if (i == 2)
-		input->time_die = philo_ato_size_t(str, &overflow);
+		input->time_die = tmp;
 	else if (i == 3)
-		input->time_eat = philo_ato_size_t(str, &overflow);
+		input->time_eat = tmp;
 	else if (i == 4)
-		input->time_sleep = philo_ato_size_t(str, &overflow);
+		input->time_sleep = tmp;
 	else if (i == 5)
-		input->meals_to_eat = philo_ato_size_t(str, &overflow);
+		input->meals_to_eat = tmp;
 	if (overflow)
-	{
-		write(2, "size_t overflow\n", 17);
-		return (-1);
-	}
+		return (write(2, "size_t overflow\n", 17), -1);
+	if (tmp == 0)
+		return (write(2, "0 not accepted as input\n", 25), -1);
 	return (1);
 }
 

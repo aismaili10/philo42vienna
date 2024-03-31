@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <stdint.h>
 
 typedef struct s_input
 {
@@ -31,14 +32,22 @@ typedef struct s_input
 
 typedef struct s_philo
 {
-	size_t		meals_had;
-	bool		*philo_died;
-	pthread_t	*philo;
+	//shared
+	bool			*philo_died;//shared
+	//individual
+	t_input			*input;
+	size_t			philo_id;//what is the purpose of this id?
+	size_t			last_meal;//individual
+	size_t			meals_enjoyed;//individual
+	pthread_t		*thread_id;//to store the ID of the thread: used to join the thread with the main thread
+	//mutexes for the shared recources and writing
+	pthread_mutex_t	*fork_mutex;//one fork is used by two philo/threads
+	pthread_mutex_t	*death_mutex;
+	pthread_mutex_t	*write_mutex;
 }	t_philo;
-
 
 int		man_input(int ac, char *av[], t_input *input);
 size_t	philo_ato_size_t(char *str, int	*overflow);
-
+void	print_usage(void);
 
 #endif

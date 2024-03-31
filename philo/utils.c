@@ -29,10 +29,15 @@ size_t	philo_ato_size_t(char *str, int	*overflow)
 	{
 		old_res = res;
 		res = res * 10 + (str[i] - '0');
-		//overflow check
 		if (res < old_res)
 			*overflow = 1;
 		i++;
 	}
 	return (res);
+}
+
+void	print_usage(void)
+{
+	write(2, "Usage: ./philo num_of_philos time_to_die ", 42);
+	write(2, "time_to_eat time_to_sleep (num_of_meals_each)\n", 47);
 }

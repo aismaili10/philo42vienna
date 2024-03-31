@@ -14,25 +14,35 @@
 
 //./philo num_of_philos time_to_die time_to_eat time_to_sleep (num_of_meals_each)
 
+/*
+int	prep_create_t()
+{
+	//which variables are needed
+	//locks are the forks
+	//
+	//
+}*/
+
 int	main(int ac, char *av[])
 {
-	int			ret;
-	t_input		*input;
+	//int			ret;
+	t_input		input;
 
-	input = malloc(sizeof(t_input));
-	if (!input)
-		return (1);
+
 	if (ac < 5 || ac > 6)
-	{
-		write(2, "Usage: ./philo num_of_philos time_to_die ", 42);
-		write(2, "time_to_eat time_to_sleep (num_of_meals_each)\n", 47);
-		return (1);
-	}
-	ret = man_input(ac, av, input);
-	if (ret == -2)//invalid input
-		return (free(input), 2);
-	printf("%zu\n%zu\n%zu\n%zu\n%zu\n", input->num_philo, input->time_die, input->time_eat, input->time_sleep, input->meals_to_eat);
+		return (print_usage(), 1);
+	if (man_input(ac, av, &input) == -2)
+		return (2);
+	//prep_create_t(&input);
+	//create_threads();
 }
+
+
+
+
+
+	//test input checks
+	//printf("%zu\n%zu\n%zu\n%zu\n%zu\n", input.num_philo, input.time_die, input.time_eat, input.time_sleep, input.meals_to_eat);
 
 /*
 	What to print:
