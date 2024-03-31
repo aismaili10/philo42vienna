@@ -6,43 +6,33 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:47:17 by aismaili          #+#    #+#             */
-/*   Updated: 2024/03/30 17:39:21 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/03/31 18:17:42 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//./philo num_of_philos time_to_die time_to_eat time_to_sleep (num_of_meals_each)
+// ./philo num_of_philos time_to_die time_to_eat time_to_sleep (num_of_meals_each)
 
-/*
-int	prep_create_t()
+int main(int ac, char *av[])
 {
-	//which variables are needed
-	//locks are the forks
-	//
-	//
-}*/
-
-int	main(int ac, char *av[])
-{
-	//int			ret;
-	t_input		input;
-
+	t_input	input;
+	t_philo	*philo;
 
 	if (ac < 5 || ac > 6)
 		return (print_usage(), 1);
 	if (man_input(ac, av, &input) == -2)
 		return (2);
-	//prep_create_t(&input);
-	//create_threads();
+	philo = malloc(sizeof(t_philo) * input.num_philo);
+	if (!philo)
+		return (3);
+	if (prep_create_t(&input, philo) == -1)
+		return (free(philo), 4);
+	create_threads(philo);
 }
 
-
-
-
-
-	//test input checks
-	//printf("%zu\n%zu\n%zu\n%zu\n%zu\n", input.num_philo, input.time_die, input.time_eat, input.time_sleep, input.meals_to_eat);
+// test input checks
+// printf("%zu\n%zu\n%zu\n%zu\n%zu\n", input.num_philo, input.time_die, input.time_eat, input.time_sleep, input.meals_to_eat);
 
 /*
 	What to print:
@@ -53,7 +43,7 @@ int	main(int ac, char *av[])
 	◦ timestamp_in_ms X is sleeping
 	◦ timestamp_in_ms X is thinking
 	◦ timestamp_in_ms X died
-	
+
 	Replace timestamp_in_ms with the current timestamp in milliseconds
 	and X with the philosopher number.
 

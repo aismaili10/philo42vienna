@@ -6,7 +6,7 @@
 #    By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/30 12:51:14 by aismaili          #+#    #+#              #
-#    Updated: 2024/03/30 17:39:52 by aismaili         ###   ########.fr        #
+#    Updated: 2024/03/31 15:58:20 by aismaili         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 RM = @/bin/rm -f
 
-SRCS = philo.c utils.c man_input.c
+SRCS = philo.c utils.c man_input.c prep_create_t.c threads.c clean_up.c
 
 OBJS = $(SRCS:.c=.o)
 
