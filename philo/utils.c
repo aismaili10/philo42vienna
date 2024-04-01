@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:55:05 by aismaili          #+#    #+#             */
-/*   Updated: 2024/03/31 18:01:06 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/01 16:14:09 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ size_t	ft_get_time(void)
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) != 0)
+	{
 		write(2, "gettimeofday fail\n", 19);
-	return (((size_t)tv.tv_sec / 1000) + ((size_t)tv.tv_usec * 1000));
+		return (1);
+	}
+	return (((size_t)tv.tv_sec * 1000) + ((size_t)tv.tv_usec / 1000));
 }
 
 int init_forks(pthread_mutex_t *fork_mutex, t_input *input)
@@ -80,9 +83,9 @@ void	ft_usleep(size_t sleep_time)
 	time_slept = 0;
 	if (gettimeofday(&start, NULL) != 0)
 		write(2, "gettimeofday file\n", 19);// how to protect
-	while (time_slept < (sleep_time))
+	while (time_slept <= (sleep_time))
 	{
-		if (gettimeofday(&cur, NULL) != 0)
+		if (gettimeofday(&cur, NULL) != 0)// maybe use ft_get_time() instead
 			write(2, "gettimeofday file\n", 19);// how to protect
 		time_slept = ((size_t)cur.tv_sec * 1000 + (size_t)cur.tv_usec / 1000)
 				 - ((size_t)start.tv_sec * 1000 + (size_t)start.tv_usec / 1000);

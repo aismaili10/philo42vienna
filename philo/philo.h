@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:48:24 by aismaili          #+#    #+#             */
-/*   Updated: 2024/03/31 18:34:47 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:06:46 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ typedef struct s_philo
 	bool			*philo_died;// shared
 	// individual
 	t_input			input;
-	size_t			philo_id;// subject asks for this id! what is its purpose?
+	size_t			philo_id;// for printing
 	size_t			lst_meal_rt;// individual
-	size_t			meals_enjoyed;// individual
+	size_t			meals_enjoyed;// individual, but shared with the monitoring thread, 
+	bool			enjoyed_all;// flag for each individual philo
 	size_t			start_time;// needed for the timestamps: when to init?
 	pthread_t		thread_id;// to store the ID of the thread: used to join the thread with the main thread
 	// mutexes for the shared recources and writing
@@ -48,6 +49,7 @@ typedef struct s_philo
 	pthread_mutex_t	*next_fork_mutex;// each must have access to the fork of the next philo
 	pthread_mutex_t	*death_mutex;// for all the death checks
 	pthread_mutex_t	*write_mutex;// for each writing
+	pthread_mutex_t	*meals_mutex;// for each writing
 }	t_philo;
 
 // man_input.c

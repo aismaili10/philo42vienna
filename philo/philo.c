@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:47:17 by aismaili          #+#    #+#             */
-/*   Updated: 2024/03/31 18:17:42 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:32:48 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int main(int ac, char *av[])
 	if (prep_create_t(&input, philo) == -1)
 		return (free(philo), 4);
 	create_threads(philo);
+	return (1);
 }
 
 // test input checks
