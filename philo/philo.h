@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:48:24 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/01 17:06:46 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:44:05 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # include <stdint.h>
 # include <errno.h>
 
+typedef enum e_mutex
+{
+	DEATH,
+	WRITE,
+	MEAL,
+}	t_muxex;
+
 typedef struct s_input
 {
 	size_t		num_philo;
@@ -35,12 +42,12 @@ typedef struct s_input
 typedef struct s_philo
 {
 	// shared
-	bool			*philo_died;// shared
+	bool			*philo_died;// shared and accessed by diff threads
+	size_t			meals_enjoyed;// individual, but shared with the monitoring thread, 
 	// individual
 	t_input			input;
 	size_t			philo_id;// for printing
 	size_t			lst_meal_rt;// individual
-	size_t			meals_enjoyed;// individual, but shared with the monitoring thread, 
 	bool			enjoyed_all;// flag for each individual philo
 	size_t			start_time;// needed for the timestamps: when to init?
 	pthread_t		thread_id;// to store the ID of the thread: used to join the thread with the main thread
@@ -60,13 +67,14 @@ int 	prep_create_t(t_input *input, t_philo *philo);
 
 // threads.c
 int		create_threads(t_philo *philo);
+bool	still_alive(t_philo *philo);
 
 // utils.c
 size_t	philo_ato_size_t(char *str, int	*overflow);
 void	print_usage(void);
 size_t	ft_get_time(void);
 int	 	init_forks(pthread_mutex_t *fork_mutex, t_input *input);
-void	ft_usleep(size_t sleep_time);
+void	ft_usleep(size_t sleep_time, t_philo *philo);
 
 // clean_up.c
 void	destroy_forks(pthread_mutex_t *forks, size_t num_philo);

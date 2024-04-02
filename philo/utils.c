@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:55:05 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/01 16:14:09 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:26:15 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ size_t	philo_ato_size_t(char *str, int	*overflow)
 
 void	print_usage(void)
 {
-	write(2, "Usage: ./philo num_of_philos time_to_die ", 42);
+	write(2, "Usage:\n./philo num_of_philos time_to_die ", 42);
 	write(2, "time_to_eat time_to_sleep (num_of_meals_each)\n", 47);
 }
 
@@ -74,20 +74,24 @@ int init_forks(pthread_mutex_t *fork_mutex, t_input *input)
 	return (0);
 }
 
-void	ft_usleep(size_t sleep_time)
+void	ft_usleep(size_t sleep_time, t_philo *philo)
 {
-	struct timeval	start;
-	struct timeval	cur;
-	size_t			time_slept;
+	size_t	start_time;
+	size_t	time_slept;
 
+	start_time = ft_get_time();
 	time_slept = 0;
-	if (gettimeofday(&start, NULL) != 0)
-		write(2, "gettimeofday file\n", 19);// how to protect
-	while (time_slept <= (sleep_time))
+	while (time_slept <= sleep_time)
 	{
-		if (gettimeofday(&cur, NULL) != 0)// maybe use ft_get_time() instead
-			write(2, "gettimeofday file\n", 19);// how to protect
-		time_slept = ((size_t)cur.tv_sec * 1000 + (size_t)cur.tv_usec / 1000)
-				 - ((size_t)start.tv_sec * 1000 + (size_t)start.tv_usec / 1000);
+		usleep(1000);
+		pthread_mutex_lock(philo->death_mutex);
+		if (*philo->philo_died == true)// how di differenciate between died, because of starvation and died, because of eaten enough? --> introduce new variable for eaten_enough?
+		{
+			pthread_mutex_unlock(philo->death_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(philo->death_mutex);
+		time_slept = ft_get_time()
+				 - start_time;
 	}
 }
