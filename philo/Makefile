@@ -6,7 +6,7 @@
 #    By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/30 12:51:14 by aismaili          #+#    #+#              #
-#    Updated: 2024/03/31 15:58:20 by aismaili         ###   ########.fr        #
+#    Updated: 2024/04/03 13:26:19 by aismaili         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 RM = @/bin/rm -f
 

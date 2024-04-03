@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:48:24 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/02 13:44:05 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:31:15 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_input
 typedef struct s_philo
 {
 	// shared
-	bool			*philo_died;// shared and accessed by diff threads
+	bool			*philo_died;// shared and accessed by diff threads, malloced
 	size_t			meals_enjoyed;// individual, but shared with the monitoring thread, 
 	// individual
 	t_input			input;
@@ -78,5 +78,6 @@ void	ft_usleep(size_t sleep_time, t_philo *philo);
 
 // clean_up.c
 void	destroy_forks(pthread_mutex_t *forks, size_t num_philo);
+void	clean_up(t_philo *philo);
 
 #endif

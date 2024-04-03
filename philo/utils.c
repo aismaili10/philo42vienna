@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:55:05 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/02 13:26:15 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:36:15 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,18 @@ int init_forks(pthread_mutex_t *fork_mutex, t_input *input)
 
 void	ft_usleep(size_t sleep_time, t_philo *philo)
 {
-	size_t	start_time;
+	size_t	beg_time;
 	size_t	time_slept;
 
-	start_time = ft_get_time();
+	beg_time = ft_get_time();
 	time_slept = 0;
-	while (time_slept <= sleep_time)
+	while (1)
 	{
-		usleep(1000);
-		pthread_mutex_lock(philo->death_mutex);
-		if (*philo->philo_died == true)// how di differenciate between died, because of starvation and died, because of eaten enough? --> introduce new variable for eaten_enough?
-		{
-			pthread_mutex_unlock(philo->death_mutex);
+		if (!still_alive(philo))
 			break ;
-		}
-		pthread_mutex_unlock(philo->death_mutex);
-		time_slept = ft_get_time()
-				 - start_time;
+		time_slept = ft_get_time() - beg_time;
+		if (time_slept >= sleep_time)
+			break ;
+		usleep(50);
 	}
 }
