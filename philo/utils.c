@@ -6,7 +6,7 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 16:55:05 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/03 18:36:15 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:36:09 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ size_t	philo_ato_size_t(char *str, int	*overflow)
 		return (0);
 	i = 0;
 	res = 0;
-	old_res = 0;
 	if (str[i] == '+')
 		i++;
 	while (str[i])
@@ -36,25 +35,16 @@ size_t	philo_ato_size_t(char *str, int	*overflow)
 	return (res);
 }
 
-void	print_usage(void)
-{
-	write(2, "Usage:\n./philo num_of_philos time_to_die ", 42);
-	write(2, "time_to_eat time_to_sleep (num_of_meals_each)\n", 47);
-}
-
 size_t	ft_get_time(void)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) != 0)
-	{
-		write(2, "gettimeofday fail\n", 19);
 		return (1);
-	}
 	return (((size_t)tv.tv_sec * 1000) + ((size_t)tv.tv_usec / 1000));
 }
 
-int init_forks(pthread_mutex_t *fork_mutex, t_input *input)
+int	init_forks(pthread_mutex_t *fork_mutex, t_input *input)
 {
 	size_t	i;
 	size_t	j;
@@ -74,20 +64,40 @@ int init_forks(pthread_mutex_t *fork_mutex, t_input *input)
 	return (0);
 }
 
-void	ft_usleep(size_t sleep_time, t_philo *philo)
+int	ft_usleep(size_t sleep_time, t_philo *philo)
 {
 	size_t	beg_time;
 	size_t	time_slept;
+	size_t	curr_time;
 
 	beg_time = ft_get_time();
-	time_slept = 0;
+	if (beg_time == 1)
+		return (print_err_msg(philo, "gettimeofday fail\n"),
+			set_philo_died(philo), 1);
 	while (1)
 	{
 		if (!still_alive(philo))
-			break ;
-		time_slept = ft_get_time() - beg_time;
+			return (1);
+		curr_time = ft_get_time();
+		if (curr_time == 1)
+			return (print_err_msg(philo, "gettimeofday fail\n"),
+				set_philo_died(philo), 1);
+		time_slept = curr_time - beg_time;
 		if (time_slept >= sleep_time)
 			break ;
 		usleep(50);
 	}
+	return (0);
+}
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
 }

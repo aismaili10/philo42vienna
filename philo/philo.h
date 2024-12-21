@@ -6,12 +6,12 @@
 /*   By: aismaili <aismaili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 12:48:24 by aismaili          #+#    #+#             */
-/*   Updated: 2024/04/03 12:31:15 by aismaili         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:23:20 by aismaili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
 # include <stdlib.h>
 # include <pthread.h>
@@ -41,43 +41,58 @@ typedef struct s_input
 
 typedef struct s_philo
 {
-	// shared
-	bool			*philo_died;// shared and accessed by diff threads, malloced
-	size_t			meals_enjoyed;// individual, but shared with the monitoring thread, 
-	// individual
+	bool			*philo_died;
+	size_t			meals_enjoyed;
 	t_input			input;
-	size_t			philo_id;// for printing
-	size_t			lst_meal_rt;// individual
-	bool			enjoyed_all;// flag for each individual philo
-	size_t			start_time;// needed for the timestamps: when to init?
-	pthread_t		thread_id;// to store the ID of the thread: used to join the thread with the main thread
-	// mutexes for the shared recources and writing
-	pthread_mutex_t	*own_fork_mutex;// one fork is used by two philo/threads
-	pthread_mutex_t	*next_fork_mutex;// each must have access to the fork of the next philo
-	pthread_mutex_t	*death_mutex;// for all the death checks
-	pthread_mutex_t	*write_mutex;// for each writing
-	pthread_mutex_t	*meals_mutex;// for each writing
+	size_t			philo_id;
+	size_t			lst_meal_rt;
+	bool			enjoyed_all;
+	size_t			start_time;
+	pthread_t		thread_id;
+	pthread_mutex_t	*own_fork_mutex;
+	pthread_mutex_t	*next_fork_mutex;
+	pthread_mutex_t	*death_mutex;
+	pthread_mutex_t	*write_mutex;
+	pthread_mutex_t	*meals_mutex;
 }	t_philo;
 
 // man_input.c
 int		man_input(int ac, char *av[], t_input *input);
 
 // prep_create_t.c
-int 	prep_create_t(t_input *input, t_philo *philo);
+int		prep_create_t(t_input *input, t_philo *philo);
 
 // threads.c
 int		create_threads(t_philo *philo);
+
+//monitor.c
+void	ft_monitor(t_philo *philo, t_input *input);
+int		set_philo_died(t_philo *philo);
+
+//ft_eat.c
+int		ft_eat(t_philo *philo);
+void	ft_print(t_philo *philo, char *str);
 bool	still_alive(t_philo *philo);
+
+//routine.c
+void	*routine(void *philo_);
+void	*one_routine(void *philo_);
 
 // utils.c
 size_t	philo_ato_size_t(char *str, int	*overflow);
-void	print_usage(void);
 size_t	ft_get_time(void);
-int	 	init_forks(pthread_mutex_t *fork_mutex, t_input *input);
-void	ft_usleep(size_t sleep_time, t_philo *philo);
+int		init_forks(pthread_mutex_t *fork_mutex, t_input *input);
+int		ft_usleep(size_t sleep_time, t_philo *philo);
+int		ft_strlen(char *str);
 
-// clean_up.c
+// utils_2.c
+int		ft_strlen(char *str);
+
+// clean_up_and_msg.c
 void	destroy_forks(pthread_mutex_t *forks, size_t num_philo);
+void	destroy_dwm_mutex(pthread_mutex_t *locks);
 void	clean_up(t_philo *philo);
+void	print_usage(void);
+void	print_err_msg(t_philo *philo, char *str);
 
 #endif
